@@ -2,328 +2,72 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pomodoro Zamanlayıcı</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Yıldız Değerlendirme</title>
   <style>
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: white;
       font-family: Arial, sans-serif;
       display: flex;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(to right, #a78bfa, #ec4899, #ef4444);
+      justify-content: center;
+      height: 100%;
     }
-    .container {
-      background-color: white;
-      padding: 2rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      width: 340px;
-    }
-    h1 {
-      text-align: center;
-      color: #1f2937;
-    }
-    .slider-container {
-      margin-bottom: 1rem;
-    }
-    .slider-container label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #4b5563;
-    }
-    input[type="range"] {
-      width: 100%;
-    }
-    input[type="range"]:disabled {
-      opacity: 0.5;
-    }
-    .time-display {
+    .rating {
+      display: flex;
+      direction: row;
       font-size: 3rem;
-      font-weight: bold;
-      text-align: center;
-      margin: 1rem 0;
-      color: #1f2937;
-    }
-    .button-container {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 0.25rem;
       cursor: pointer;
     }
-    #toggleButton {
-      background-color: #3b82f6;
-      color: white;
+    .star {
+      color: #ccc;
+      transition: color 0.2s;
     }
-    #resetButton {
-      background-color: #6b7280;
-      color: white;
-    }
-    .session-type {
-      text-align: center;
-      margin: 1rem 0;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #1f2937;
-    }
-    .session-log {
-      margin-top: 1rem;
-    }
-    .session-log h2 {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-      color: #1f2937;
-    }
-    .session-log ul {
-      padding-left: 1.5rem;
-      color: #4b5563;
-    }
-
-    .tag-section {
-      margin: 1rem 0;
-    }
-    .tag-section h2 {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      color: #1f2937;
-    }
-    .tag-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .tag-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      position: relative;
-    }
-    .tag-row input[type="checkbox"] {
-      transform: scale(1.2);
-    }
-    .tag-row input[type="text"] {
-      flex: 1;
-      padding: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 0.25rem;
-    }
-    .remove-btn {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      position: absolute;
-      right: -30px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      color: #ef4444;
-    }
-    .tag-row:hover .remove-btn {
-      opacity: 1;
-    }
-    #addTagButton {
-      margin-top: 0.5rem;
-      background-color: #10b981;
-      color: white;
-      padding: 0.3rem 0.7rem;
-      border: none;
-      border-radius: 0.25rem;
-      cursor: pointer;
+    .star.hover,
+    .star.selected {
+      color: #f59e0b;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Pomodoro Zamanlayıcı</h1>
-
-    <div class="slider-container">
-      <label for="workDuration">Çalışma Süresi: <span id="workDurationDisplay">25</span> dakika</label>
-      <input type="range" id="workDuration" min="1" max="60" value="25" />
-    </div>
-    <div class="slider-container">
-      <label for="breakDuration">Mola Süresi: <span id="breakDurationDisplay">5</span> dakika</label>
-      <input type="range" id="breakDuration" min="1" max="30" value="5" />
-    </div>
-
-    <div class="session-type" id="sessionType">Çalışma Zamanı</div>
-    <div class="time-display" id="timeLeft">25:00</div>
-
-    <div class="button-container">
-      <button id="toggleButton">Başlat</button>
-      <button id="resetButton">Sıfırla</button>
-    </div>
-
-    <div class="tag-section">
-      <h2>Çalışmalar</h2>
-      <div id="tagContainer" class="tag-container">
-        <div class="tag-row">
-          <input type="checkbox" />
-          <input type="text" value="İş" />
-          <span class="remove-btn" title="Kaldır">🗑️</span>
-        </div>
-      </div>
-      <button id="addTagButton">+ Etiket Ekle</button>
-    </div>
-
-    <div class="session-log">
-      <h2>Oturum Geçmişi:</h2>
-      <ul id="sessionLog"></ul>
-    </div>
+  <div class="rating" id="rating">
+    <span class="star" data-value="1">★</span>
+    <span class="star" data-value="2">★</span>
+    <span class="star" data-value="3">★</span>
+    <span class="star" data-value="4">★</span>
+    <span class="star" data-value="5">★</span>
   </div>
 
   <script>
-    const workDurationSlider = document.getElementById("workDuration");
-    const breakDurationSlider = document.getElementById("breakDuration");
-    const workDurationDisplay = document.getElementById("workDurationDisplay");
-    const breakDurationDisplay = document.getElementById("breakDurationDisplay");
-    const timeLeftDisplay = document.getElementById("timeLeft");
-    const toggleButton = document.getElementById("toggleButton");
-    const resetButton = document.getElementById("resetButton");
-    const sessionTypeDisplay = document.getElementById("sessionType");
-    const sessionLogList = document.getElementById("sessionLog");
-    const tagContainer = document.getElementById("tagContainer");
-    const addTagButton = document.getElementById("addTagButton");
+    const stars = document.querySelectorAll(".star");
+    let selectedRating = 0;
 
-    let workDuration = 25;
-    let breakDuration = 5;
-    let timeLeft = workDuration * 60;
-    let isActive = false;
-    let isWork = true;
-    let interval;
-
-    const tickingSound = new Audio("https://claritycontrol.cc/pomodoro-timer/audio/clock-tick.mp3");
-    const bellSound = new Audio("https://claritycontrol.cc/pomodoro-timer/audio/ring.mp3");
-
-    function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = seconds % 60;
-      return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-    }
-
-    function updateDisplay() {
-      timeLeftDisplay.textContent = formatTime(timeLeft);
-      sessionTypeDisplay.textContent = isWork ? "Çalışma Zamanı" : "Mola Zamanı";
-      toggleButton.textContent = isActive ? "Duraklat" : "Başlat";
-      workDurationSlider.disabled = isActive;
-      breakDurationSlider.disabled = isActive;
-    }
-
-    function getSelectedTags() {
-      const selected = [];
-      tagContainer.querySelectorAll(".tag-row").forEach(row => {
-        const checkbox = row.querySelector('input[type="checkbox"]');
-        const text = row.querySelector('input[type="text"]').value.trim();
-        if (checkbox.checked && text) {
-          selected.push(text);
-        }
+    stars.forEach((star, index) => {
+      star.addEventListener("mouseover", () => {
+        highlightStars(index);
       });
-      return selected;
-    }
 
-    function startTimer() {
-      isActive = true;
-      interval = setInterval(() => {
-        if (timeLeft > 0) {
-          timeLeft--;
-          if (timeLeft <= 10 && timeLeft > 0) tickingSound.play();
-        } else {
-          clearInterval(interval);
-          bellSound.play();
-          const sessionType = isWork ? "Çalışma" : "Mola";
-          const duration = isWork ? workDuration : breakDuration;
-          let tagText = "";
-
-          if (isWork) {
-            const selectedTags = getSelectedTags();
-            if (selectedTags.length) {
-              tagText = ` (${selectedTags.join(", ")})`;
-            }
-          }
-
-          const logItem = document.createElement("li");
-          logItem.textContent = `${sessionType} süresi: ${duration} dakika${tagText}`;
-          sessionLogList.appendChild(logItem);
-
-          isWork = !isWork;
-          timeLeft = isWork ? workDuration * 60 : breakDuration * 60;
-          startTimer();
-        }
-        updateDisplay();
-      }, 1000);
-      updateDisplay();
-    }
-
-    function toggleTimer() {
-      if (isActive) {
-        clearInterval(interval);
-        isActive = false;
-      } else {
-        startTimer();
-      }
-      updateDisplay();
-    }
-
-    function resetTimer() {
-      clearInterval(interval);
-      isActive = false;
-      isWork = true;
-      timeLeft = workDuration * 60;
-      tickingSound.pause();
-      tickingSound.currentTime = 0;
-      updateDisplay();
-    }
-
-    function handleWorkDurationChange() {
-      workDuration = parseInt(workDurationSlider.value);
-      workDurationDisplay.textContent = workDuration;
-      if (isWork && !isActive) {
-        timeLeft = workDuration * 60;
-        updateDisplay();
-      }
-    }
-
-    function handleBreakDurationChange() {
-      breakDuration = parseInt(breakDurationSlider.value);
-      breakDurationDisplay.textContent = breakDuration;
-      if (!isWork && !isActive) {
-        timeLeft = breakDuration * 60;
-        updateDisplay();
-      }
-    }
-
-    function addTagRow() {
-      const row = document.createElement("div");
-      row.className = "tag-row";
-      row.innerHTML = `
-        <input type="checkbox" />
-        <input type="text" placeholder="Etiket girin" />
-        <span class="remove-btn" title="Kaldır">🗑️</span>
-      `;
-      tagContainer.appendChild(row);
-
-      // Kaldırma butonuna event ekle
-      row.querySelector(".remove-btn").addEventListener("click", () => {
-        row.remove();
+      star.addEventListener("mouseout", () => {
+        highlightStars(selectedRating - 1);
       });
-    }
 
-    // Başlangıçtaki kaldır butonuna da event ekle
-    tagContainer.querySelector(".remove-btn").addEventListener("click", function () {
-      this.parentElement.remove();
+      star.addEventListener("click", () => {
+        selectedRating = index + 1;
+        highlightStars(index);
+        console.log("Değerlendirme:", selectedRating);
+      });
     });
 
-    addTagButton.addEventListener("click", addTagRow);
-    toggleButton.addEventListener("click", toggleTimer);
-    resetButton.addEventListener("click", resetTimer);
-    workDurationSlider.addEventListener("input", handleWorkDurationChange);
-    breakDurationSlider.addEventListener("input", handleBreakDurationChange);
-
-    updateDisplay();
+    function highlightStars(index) {
+      stars.forEach((star, i) => {
+        star.classList.remove("hover", "selected");
+        if (i <= index) {
+          star.classList.add("selected");
+        }
+      });
+    }
   </script>
 </body>
 </html>
